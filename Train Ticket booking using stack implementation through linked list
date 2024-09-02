@@ -1,0 +1,122 @@
+#include <iostream>
+using namespace std;
+
+struct TicketNode
+{
+    string ticketNumber;
+    TicketNode* next;
+};
+
+struct TicketStack
+{
+    TicketNode* top = nullptr;
+
+    void bookTicket()
+    {
+        string ticketNumber;
+        cout << "Enter ticket number to book: ";
+        cin >> ticketNumber;
+        TicketNode* newNode = new TicketNode();
+        newNode->ticketNumber = ticketNumber;
+        newNode->next = top;
+        top = newNode;
+        cout << "Ticket booked: " << ticketNumber << endl;
+    }
+
+    bool isEmpty()
+    {
+        return top == nullptr;
+    }
+
+    void cancelTicket()
+    {
+        if (isEmpty())
+        {
+            cout << "No tickets to cancel." << endl;
+        }
+        else
+        {
+            cout << "Cancelling ticket: " << top->ticketNumber << endl;
+            TicketNode* temp = top;
+            top = top->next;
+            delete temp;
+        }
+    }
+
+    void viewCurrentTicket()
+    {
+        if (isEmpty())
+        {
+            cout << "No tickets booked yet." << endl;
+        }
+        else
+        {
+            cout << "Current ticket: " << top->ticketNumber << endl;
+        }
+    }
+
+    void displayAllTickets()
+    {
+        if (isEmpty())
+        {
+            cout << "No tickets booked." << endl;
+        }
+        else
+        {
+            cout << "Booked Tickets:" << endl;
+            TicketNode* current = top;
+            while (current != nullptr)
+            {
+                cout << current->ticketNumber << endl;
+                current = current->next;
+            }
+        }
+    }
+};
+
+int main()
+{
+    TicketStack ts;
+    int choice;
+    cout << "Train Ticket Booking System Options\n1. Book a new ticket\n2. Cancel the most recent ticket\n3. View current ticket\n4. Show all booked tickets\n5. Exit";
+
+    do
+    {
+        cout << endl << "Enter choice: ";
+        cin >> choice;
+        switch (choice)
+        {
+            case 1:
+            {
+                ts.bookTicket();
+                break;
+            }
+            case 2:
+            {
+                ts.cancelTicket();
+                break;
+            }
+            case 3:
+            {
+                ts.viewCurrentTicket();
+                break;
+            }
+            case 4:
+            {
+                ts.displayAllTickets();
+                break;
+            }
+            case 5:
+            {
+                cout << "Exit. Thank you for using the train booking system!" << endl;
+                break;
+            }
+            default:
+            {
+                cout << "Enter appropriate choice" << endl;
+            }
+        }
+    } while (choice != 5);
+
+    return 0;
+}
