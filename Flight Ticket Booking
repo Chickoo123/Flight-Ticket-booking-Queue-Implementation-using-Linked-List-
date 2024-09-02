@@ -1,0 +1,97 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Node {
+    string passengerName;
+    int ticketID;
+    Node* next;
+};
+
+struct Queue {
+    Node* front = nullptr;
+    Node* rear = nullptr;
+    int ticketCounter = 0;  
+    bool isEmpty() {
+        return front == nullptr;
+    }
+
+    void enqueue() {
+        string name;
+        cout << "Enter passenger name: ";
+        cin.ignore();  
+        getline(cin, name);
+
+        Node* newnode = new Node();
+        newnode->passengerName = name;
+        newnode->ticketID = ++ticketCounter; 
+        newnode->next = nullptr;
+
+        if (isEmpty()) {
+            front = newnode;
+            rear = newnode;
+        } else {
+            rear->next = newnode;
+            rear = newnode;
+        }
+        cout << "Booking successful! Ticket ID: " << newnode->ticketID << endl;
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "Cannot process. Queue is empty" << endl;
+        } else {
+            cout << "Processing booking for passenger: " << front->passengerName << " with Ticket ID: " << front->ticketID << endl;
+            Node* temp = front;
+            front = front->next;
+            delete temp;
+        }
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "Cannot display. Queue is empty" << endl;
+        } else {
+            cout << "Displaying Bookings:" << endl;
+            Node* current = front;
+            while (current != nullptr) {
+                cout << "Passenger Name: " << current->passengerName << ", Ticket ID: " << current->ticketID << endl;
+                current = current->next;
+            }
+        }
+    }
+};
+
+int main() {
+    Queue q;
+    int ch;
+
+    cout << "Options\n1.Book Ticket\n2.Process Booking\n3.Display Bookings\n4.Exit";
+    do {
+        cout << endl << "Enter choice: ";
+        cin >> ch;
+        switch (ch) {
+            case 1: {
+                q.enqueue();
+                break;
+            }
+            case 2: {
+                q.dequeue();
+                break;
+            }
+            case 3: {
+                q.display();
+                break;
+            }
+            case 4: {
+                cout << "Exit. Thank You!" << endl;
+                break;
+            }
+            default: {
+                cout << "Enter appropriate choice" << endl;
+            }
+        }
+    } while (ch != 4);
+
+    return 0;
+}
